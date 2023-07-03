@@ -22,10 +22,12 @@ Define environment variables in your `package.json`
 ```
 
 You'll automatically be prompted to enter the values required for your project. 
-The following environment variables will automatically be applied:
+The following environment variables will automatically be passed as environment variables to the application launched by environment:
 - `HOST`
 - `DATABASE_HOST`
 - `DATABASE_PORT`
+
+Access them as usual with `process.env.HOST` - no changes to the code required.
 
 ## Modifiers
 Modifiers may be added to the names in the package configuration
