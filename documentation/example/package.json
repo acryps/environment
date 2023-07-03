@@ -1,0 +1,14 @@
+{
+	"name": "environment-example",
+	"environment": {
+		"host": "Application Host",
+		"database": {
+			"host": "Database Host",
+			"+port?5432": "Database Port",
+			"authentication": {
+				"username": "Database Username",
+				"password": "Database Password"
+			}
+		}
+	}
+}
