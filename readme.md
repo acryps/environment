@@ -4,7 +4,10 @@ Environment variable manager for local development
 > Currently only supports systems that have the unix 'which' command.
 
 ## Getting Started
+`npm install @acryps/environment --save-dev`
+
 Active environment by adding `environment` before launching your application in your scripts
+
 `tsc && node index.js` → `tsc && environment node index.js`
 
 Define environment variables in your `package.json`
