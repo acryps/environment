@@ -168,12 +168,11 @@ checkConfiguration(environmentConfiguration, []).then(() => {
 		writeFileSync(environmentSaveLocation, JSON.stringify(savedEnvironments, null, '\t'));
 	}
 
-	// todo add multi platform support
-	const childProgramLocation = spawnSync('which', [childProgram[0]]).stdout.toString().trim();
+	const nodeLocation =  process.execPath;
 
 	// do not inject any variables from our state
 	// passing our own properties like 'active setting' would allow developers to add checks to them instead of using the configured environment variables, which is not intended
-	const childProcess = spawn(childProgramLocation, childProgram.slice(1), {
+	const childProcess = spawn(nodeLocation, childProgram.slice(1), {
 		stdio: 'inherit',
 		env: {
 			...process.env,
