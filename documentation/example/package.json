@@ -10,5 +10,8 @@
 				"password": "Database Password"
 			}
 		}
+	},
+	"scripts": {
+		"start": "environment index.js"
 	}
 }
