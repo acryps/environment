@@ -76,7 +76,7 @@ if (!environmentConfiguration) {
 }
 
 function convertToEnvironmentVariableName(...path: string[]) {
-	return path.join('_').toUpperCase();
+	return path.join('_').replace(/[A-Z]/g, match => `_${match}`).toUpperCase();
 }
 
 const environment: Record<string, string> = {};
