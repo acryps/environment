@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-require('built/index.js');
+require('./built/index.js');
