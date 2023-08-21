@@ -8,7 +8,8 @@
 	"scripts": {
 		"build": "tsc",
 		"test": "cd documentation/example && node ../../built/index.js node index.js",
-		"start": "node built/index.js"
+		"start": "node built/index.js",
+		"prepare": "tsc"
 	},
 	"dependencies": {
 		"which": "^3.0.1"
