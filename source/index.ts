@@ -5,6 +5,7 @@ import { homedir } from "os";
 import { SavedConfiguration } from "./save";
 import { createInterface } from "readline/promises";
 import { spawn } from "child_process";
+import { sync } from "which";
 
 const childProgram = process.argv.slice(2);
 
@@ -168,11 +169,11 @@ checkConfiguration(environmentConfiguration, []).then(() => {
 		writeFileSync(environmentSaveLocation, JSON.stringify(savedEnvironments, null, '\t'));
 	}
 
-	const nodeLocation = process.execPath;
+	const programLocation = sync(childProgram[0]);
 
 	// do not inject any variables from our state
 	// passing our own properties like 'active setting' would allow developers to add checks to them instead of using the configured environment variables, which is not intended
-	const childProcess = spawn(nodeLocation, childProgram, {
+	const childProcess = spawn(programLocation, childProgram.slice(1), {
 		stdio: 'inherit',
 		env: {
 			...process.env,

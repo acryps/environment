@@ -4,9 +4,9 @@ Environment variable manager for local development
 ## Getting Started
 `npm install @acryps/environment --save-dev`
 
-Active environment by adding `environment` before launching your application in your scripts
+Active environment by adding `environment` before launching your application in your scripts (will work with any tool)
 
-`tsc && node index.js` → `tsc && environment index.js`
+`tsc && node index.js` → `tsc && environment node index.js`
 
 Define environment variables in your `package.json`
 ```
@@ -36,9 +36,3 @@ Modifiers may be added to the names in the package configuration
 - `+…`: Require a numeric value
 
 Adding an uppercase letter in the variables name will automatically be expanded with a `_`: `accessKey` → `ACCESS_KEY`
-
-## Node Options
-Options for node can still be used, just add them before your modules location
-`node --max-old-space-size=16192 index.js` → `environment --max-old-space-size=16192 index.js`
-
-The child program will be executed with the same node as environment (using `process.execPath`)

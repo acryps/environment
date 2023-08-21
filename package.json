@@ -10,8 +10,12 @@
 		"test": "cd documentation/example && node ../../built/index.js node index.js",
 		"start": "node built/index.js"
 	},
+	"dependencies": {
+		"which": "^3.0.1"
+	},
 	"devDependencies": {
 		"@types/node": "^20.3.3",
+		"@types/which": "^3.0.0",
 		"typescript": "^5.1.6"
 	}
 }
