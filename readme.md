@@ -36,3 +36,12 @@ Modifiers may be added to the names in the package configuration
 - `+…`: Require a numeric value
 
 Adding an uppercase letter in the variables name will automatically be expanded with a `_`: `accessKey` → `ACCESS_KEY`
+
+## Exporting
+The current settings can be exported for vlcluster by running
+
+```
+environment --export-cluster
+```
+
+More exporters will be added at some point :)

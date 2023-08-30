@@ -164,24 +164,39 @@ async function checkConfiguration(configuration: EnvironmentConfiguration, prefi
 	}
 }
 
-checkConfiguration(environmentConfiguration, []).then(() => {
+checkConfiguration(environmentConfiguration, []).then(async () => {
 	if (saveRequired) {
 		writeFileSync(environmentSaveLocation, JSON.stringify(savedEnvironments, null, '\t'));
 	}
 
-	const programLocation = sync(childProgram[0]);
+	switch (childProgram[0]) {
+		case '--export-cluster': {
+			const applicationFilter = await inputInterface.question('Cluster Application Name: ');
+			const environmentFilter = await inputInterface.question('Cluster Environment: ');
 
-	// do not inject any variables from our state
-	// passing our own properties like 'active setting' would allow developers to add checks to them instead of using the configured environment variables, which is not intended
-	const childProcess = spawn(programLocation, childProgram.slice(1), {
-		stdio: 'inherit',
-		env: {
-			...process.env,
-			...environment
+			for (let name in environment) {
+				process.stdout.write(`vlc2 var set -a ${applicationFilter} -e ${environmentFilter} -n ${JSON.stringify(name)} -v ${JSON.stringify(environment[name])}\n`);
+			}
+
+			return;
 		}
-	});
 
-	childProcess.on('exit', code => {
-		process.exit(code ?? 0);
-	});
+		default: {
+			const programLocation = sync(childProgram[0]);
+
+			// do not inject any variables from our state
+			// passing our own properties like 'active setting' would allow developers to add checks to them instead of using the configured environment variables, which is not intended
+			const childProcess = spawn(programLocation, childProgram.slice(1), {
+				stdio: 'inherit',
+				env: {
+					...process.env,
+					...environment
+				}
+			});
+
+			childProcess.on('exit', code => {
+				process.exit(code ?? 0);
+			});
+		}
+	}
 });
