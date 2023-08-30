@@ -39,7 +39,6 @@ Adding an uppercase letter in the variables name will automatically be expanded 
 
 ## Exporting
 The current settings can be exported for vlcluster by running
-
 ```
 environment --export-cluster
 ```
