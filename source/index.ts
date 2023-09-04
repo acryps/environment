@@ -171,9 +171,9 @@ checkConfiguration(environmentConfiguration, []).then(async () => {
 
 	switch (childProgram[0]) {
 		case '--export': {
-			process.stdout.write(`${Buffer.from(JSON.stringify(environment), 'utf-8').toString('hex')}\n`);
+			process.stdout.write(`${Buffer.from(JSON.stringify(environment), 'utf-8').toString('base64')}\n`);
 
-			return;
+			return process.exit(0);
 		}
 
 		case '--export-cluster': {
@@ -184,7 +184,7 @@ checkConfiguration(environmentConfiguration, []).then(async () => {
 				process.stdout.write(`vlc2 var set -a ${applicationFilter} -e ${environmentFilter} -n ${JSON.stringify(name)} -v ${JSON.stringify(environment[name])}\n`);
 			}
 
-			return;
+			return process.exit(0);
 		}
 
 		default: {
