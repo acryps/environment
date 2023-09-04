@@ -176,12 +176,34 @@ checkConfiguration(environmentConfiguration, []).then(async () => {
 			return process.exit(0);
 		}
 
+		case '--export-json': {
+			process.stdout.write(`${JSON.stringify(environment)}\n`);
+
+			return process.exit(0);
+		}
+
 		case '--export-cluster': {
 			const applicationFilter = await inputInterface.question('Cluster Application Name: ');
 			const environmentFilter = await inputInterface.question('Cluster Environment: ');
 
 			for (let name in environment) {
 				process.stdout.write(`vlc2 var set -a ${applicationFilter} -e ${environmentFilter} -n ${JSON.stringify(name)} -v ${JSON.stringify(environment[name])}\n`);
+			}
+
+			return process.exit(0);
+		}
+
+		case '--export-shell': {
+			for (let name in environment) {
+				process.stdout.write(`${name}=${JSON.stringify(environment[name])}\n`);
+			}
+
+			return process.exit(0);
+		}
+
+		case '--export-dotenv': {
+			for (let name in environment) {
+				process.stdout.write(`export ${name}=${JSON.stringify(environment[name])}\n`);
 			}
 
 			return process.exit(0);

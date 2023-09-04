@@ -38,14 +38,12 @@ Modifiers may be added to the names in the package configuration
 Adding an uppercase letter in the variables name will automatically be expanded with a `_`: `accessKey` → `ACCESS_KEY`
 
 ## Exporting
-Export the current environment for another user by using 
-```
-environment --export
-```
+The current configuration can be exported in various formats for import into other applications
 
-The current settings can be exported for vlcluster by running
 ```
-environment --export-cluster
+npx environment --export # exports as environment bundle, for import into environment
+npx environment --export-json # exports as json
+npx environment --export-shell # exports as NAME="VALUE" statements for shell scripts
+npx environment --export-dotenv # exports as export NAME="VALUE" statements for .env files
+npx environment --export-cluster # exports as vlcluster variable commands
 ```
-
-More exporters will be added at some point :)
