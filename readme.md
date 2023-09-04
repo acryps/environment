@@ -38,6 +38,11 @@ Modifiers may be added to the names in the package configuration
 Adding an uppercase letter in the variables name will automatically be expanded with a `_`: `accessKey` → `ACCESS_KEY`
 
 ## Exporting
+Export the current environment for another user by using 
+```
+environment --export
+```
+
 The current settings can be exported for vlcluster by running
 ```
 environment --export-cluster

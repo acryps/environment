@@ -170,6 +170,12 @@ checkConfiguration(environmentConfiguration, []).then(async () => {
 	}
 
 	switch (childProgram[0]) {
+		case '--export': {
+			process.stdout.write(`${Buffer.from(JSON.stringify(environment), 'utf-8').toString('hex')}\n`);
+
+			return;
+		}
+
 		case '--export-cluster': {
 			const applicationFilter = await inputInterface.question('Cluster Application Name: ');
 			const environmentFilter = await inputInterface.question('Cluster Environment: ');
