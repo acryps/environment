@@ -193,6 +193,14 @@ checkConfiguration(environmentConfiguration, []).then(async () => {
 			return process.exit(0);
 		}
 
+		case '--export-kubernetes': {
+			for (let name in environment) {
+				process.stdout.write(`- name: ${JSON.stringify(name)}\n  value: ${JSON.stringify(environment[name])}\n`);
+			}
+
+			return process.exit(0);
+		}
+
 		case '--export-shell': {
 			for (let name in environment) {
 				process.stdout.write(`${name}=${JSON.stringify(environment[name])}\n`);

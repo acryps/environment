@@ -46,4 +46,5 @@ npx environment --export-json # exports as json
 npx environment --export-shell # exports as NAME="VALUE" statements for shell scripts
 npx environment --export-dotenv # exports as export NAME="VALUE" statements for .env files
 npx environment --export-cluster # exports as vlcluster variable commands
+npx environment --export-kubernetes # exports as kubernetes deployment configuration values
 ```
