@@ -164,14 +164,67 @@ async function checkConfiguration(configuration: EnvironmentConfiguration, prefi
 	}
 }
 
+const save = () => {
+	writeFileSync(environmentSaveLocation, JSON.stringify(savedEnvironments, null, '\t'));
+}
+
 checkConfiguration(environmentConfiguration, []).then(async () => {
 	if (saveRequired) {
-		writeFileSync(environmentSaveLocation, JSON.stringify(savedEnvironments, null, '\t'));
+		save();
 	}
 
 	switch (childProgram[0]) {
+		case '--switch': {
+			if (childProgram.length != 2) {
+				process.stderr.write(`missing arguments\nusage: environment --switch <setting>\nuse 'environment --settings' to list all previously created settings\n`);
+
+				return process.exit(1);
+			}
+
+			projectSettings.active = childProgram[1].trim();
+
+			if (projectSettings.active in projectSettings.settings) {
+				process.stdout.write(`switched to existing setting '${projectSettings.active}'\n`);
+			} else {
+				process.stdout.write(`switched to new setting '${projectSettings.active}'\n`);
+			}
+
+			save();
+
+			return process.exit(0);
+		}
+
+		case '--active-setting': {
+			process.stdout.write(`${projectSettings.active}\n`);
+
+			return process.exit(0);
+		}
+
+		case '--settings': {
+			for (let setting in projectSettings.settings) {
+				process.stdout.write(`${setting}\n`);
+			}
+
+			return process.exit(0);
+		}
+
+		case '--import': {
+			if (childProgram.length != 2) {
+				process.stderr.write(`missing arguments\nusage: environment --import <exported blob>\n`);
+
+				return process.exit(1);
+			}
+
+			const settings = JSON.parse(Buffer.from(childProgram[1].trim(), 'base64').toString('utf-8'));
+			projectSettings.settings[projectSettings.active] = settings;
+
+			save();
+
+			return process.exit(0);
+		}
+
 		case '--export': {
-			process.stdout.write(`${Buffer.from(JSON.stringify(environment), 'utf-8').toString('base64')}\n`);
+			process.stdout.write(`environment --import ${Buffer.from(JSON.stringify(environment), 'utf-8').toString('base64')}\n`);
 
 			return process.exit(0);
 		}
