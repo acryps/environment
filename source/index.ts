@@ -103,6 +103,8 @@ switch (childProgram[0]) {
 
 		save();
 
+		process.stdout.write(`imported into setting '${projectSettings.active}'\n`);
+
 		process.exit(0);
 	}
 }
@@ -228,7 +230,7 @@ checkConfiguration(environmentConfiguration, []).then(async () => {
 	// catch cli commands that require variables set
 	switch (childProgram[0]) {
 		case '--export': {
-			process.stdout.write(`environment --import ${Buffer.from(JSON.stringify(environment), 'utf-8').toString('base64')}\n`);
+			process.stdout.write(`environment --import ${Buffer.from(JSON.stringify(activeSettings), 'utf-8').toString('base64')}\n`);
 
 			return process.exit(0);
 		}
