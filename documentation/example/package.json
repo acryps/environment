@@ -12,6 +12,6 @@
 		}
 	},
 	"scripts": {
-		"start": "environment index.js"
+		"start": "environment node index.js"
 	}
 }
