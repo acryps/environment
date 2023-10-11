@@ -185,6 +185,10 @@ switch (childProgram[0]) {
 
 	default: {
 		chain.walk(environmentConfiguration, async node => {
+			if (node.currentValue) {
+				return node.currentValue;
+			}
+
 			while (true) {
 				let response = await inputInterface.question(`${node.name} (${node.environmentName})${node.defaultValue ? ` [${node.defaultValue}]` : ''}: `);
 				

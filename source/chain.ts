@@ -60,20 +60,18 @@ export class ConfigurationChain {
 						name = name.split('?')[0];
 					}
 	
-					while (!(name in savedHead) || typeof savedHead[name] != 'string') {
-						const transformed = await transform({
-							name: configuration[key] as string,
-							isNumber,
-							currentValue: savedHead[name] as string,
-							defaultValue,
-							environmentName: convertToEnvironmentVariableName(...prefix, name)
-						});
+					const transformed = await transform({
+						name: configuration[key] as string,
+						isNumber,
+						currentValue: savedHead[name] as string,
+						defaultValue,
+						environmentName: convertToEnvironmentVariableName(...prefix, name)
+					});
 	
-						if (transformed === undefined) {
-							delete savedHead[name];
-						} else {
-							savedHead[name] = transformed;
-						}
+					if (transformed === undefined) {
+						delete savedHead[name];
+					} else {
+						savedHead[name] = transformed;
 					}
 	
 					this.environment[convertToEnvironmentVariableName(...prefix, name)] = savedHead[name] as string;
