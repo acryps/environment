@@ -30,6 +30,29 @@ The following environment variables will automatically be passed as environment 
 
 Access them as usual with `process.env.HOST` - no changes to the code required.
 
+## Switching Settings
+You may be working on a testing and staging environment. You can quickly switch between different settings in environment, just create a new environment by using 
+```
+$ npx environment --switch test
+```
+
+This will create a new setting 'test', where you can set entirely different environment variables.
+You'll automatically be prompted to create new variables when you start your application again.
+
+```
+$ npx environment --active-setting # returns the current setting name
+$ npx environment --settings # returns all available settings
+```
+
+## Editing the values
+It does not get much simpler, just use `--edit` with an optional prefix (case insensitive)
+
+```
+$ npx environment --edit
+$ npx environment --edit database # only database properties
+$ npx environment --edit AUTHENTICATION_ENCRYPTION # only authentication → encryption properties
+```
+
 ## Modifiers
 Modifiers may be added to the names in the package configuration
 - `…?default`: Set a default value which will be accepted when the user does not provide a value
@@ -37,14 +60,17 @@ Modifiers may be added to the names in the package configuration
 
 Adding an uppercase letter in the variables name will automatically be expanded with a `_`: `accessKey` → `ACCESS_KEY`
 
-## Exporting
-The current configuration can be exported in various formats for import into other applications
+## Exporting / Importing
+The current configuration can be exported in various formats for import into other applications.
+You can send your current configuration to new team members, and they can quickly import them.
 
 ```
-npx environment --export # exports as environment bundle, for import into environment
-npx environment --export-json # exports as json
-npx environment --export-shell # exports as NAME="VALUE" statements for shell scripts
-npx environment --export-dotenv # exports as export NAME="VALUE" statements for .env files
-npx environment --export-cluster # exports as vlcluster variable commands
-npx environment --export-kubernetes # exports as kubernetes deployment configuration values
+$ npx environment --export # exports as environment bundle, for import into environment
+$ npx environment --import <blob> # import the environment bundle into the active setting
+
+$ npx environment --export-json # exports as json
+$ npx environment --export-shell # exports as NAME="VALUE" statements for shell scripts
+$ npx environment --export-dotenv # exports as export NAME="VALUE" statements for .env files
+$ npx environment --export-cluster # exports as vlcluster variable commands
+$ npx environment --export-kubernetes # exports as kubernetes deployment configuration values
 ```
