@@ -146,7 +146,13 @@ let saveRequired = false;
 // catch cli commands which do not require the environment but not all variables set
 switch (childProgram[0]) {
 	case '--edit': {
+		const prefix = (childProgram[1] ?? '').toUpperCase();
+
 		chain.walk(environmentConfiguration, async node => {
+			if (!node.environmentName.startsWith(prefix)) {
+				return node.currentValue;
+			}
+
 			while (true) {
 				let response = await inputInterface.question(`${node.name} (${node.environmentName})${node.currentValue ? ` [${node.currentValue}]` : (node.defaultValue ? ` [${node.defaultValue}]` : '')}: `);
 				
