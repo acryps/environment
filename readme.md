@@ -53,7 +53,8 @@ $ npx environment --switch default
 You'll need to restart your program whenever you change variables!
 
 ## Editing the values
-It does not get much simpler, just use `--edit` with an optional prefix (case insensitive)
+Just use `--edit` with an optional prefix (case insensitive).
+You'll be prompted to enter new values, just press enter to take the current value.
 
 ```
 $ npx environment --edit
