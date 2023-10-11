@@ -29,6 +29,7 @@ The following environment variables will automatically be passed as environment 
 - `DATABASE_PORT`
 
 Access them as usual with `process.env.HOST` - no changes to the code required.
+The variables are stored in `~/.a-environment` and is thus outside of your current git directory - You can store secrets too and they will never end up in your git!
 
 ## Switching Settings
 You may be working on a testing and staging environment. You can quickly switch between different settings in environment, just create a new environment by using 
