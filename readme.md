@@ -45,6 +45,13 @@ $ npx environment --active-setting # returns the current setting name
 $ npx environment --settings # returns all available settings
 ```
 
+You can switch back to your default setting at any time
+```
+$ npx environment --switch default
+```
+
+You'll need to restart your program whenever you change variables!
+
 ## Editing the values
 It does not get much simpler, just use `--edit` with an optional prefix (case insensitive)
 
