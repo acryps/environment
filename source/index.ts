@@ -42,13 +42,13 @@ let projectLocation = process.cwd();
 if (childProgram[0] == '--base') {
 	childProgram.shift();
 
-	projectLocation = resolve(childProgram.shift());
+	projectLocation = resolve(childProgram.shift()!);
 
 	if (!existsSync(projectLocation)) {
 		throw new Error(`Cannot set base to '${projectLocation}': The path does not exist`);
 	}
 
-	if (!statSync(projectLocation).isDirectory(projectLocation)) {
+	if (!statSync(projectLocation).isDirectory()) {
 		throw new Error(`Cannot set base to '${projectLocation}': The path is not a directory`);
 	}
 }
