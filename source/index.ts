@@ -1,5 +1,5 @@
-import { existsSync, readFileSync, writeFileSync } from "fs";
-import path, { join } from "path";
+import { existsSync, readFileSync, writeFileSync, statSync } from "fs";
+import path, { join, resolve } from "path";
 import { EnvironmentConfiguration } from "./declaration";
 import { homedir } from "os";
 import { SavedConfiguration } from "./save";
@@ -37,7 +37,21 @@ if (savedEnvironments.version != 1) {
 	throw new Error(`Invalid saved environments version '${savedEnvironments.version}' in '${environmentSaveLocation}'.`);
 }
 
-const projectLocation = process.cwd();
+let projectLocation = process.cwd();
+
+if (childProgram[0] == '--base') {
+	childProgram.shift();
+
+	projectLocation = resolve(childProgram.shift());
+
+	if (!existsSync(projectLocation)) {
+		throw new Error(`Cannot set base to '${projectLocation}': The path does not exist`);
+	}
+
+	if (!statSync(projectLocation).isDirectory(projectLocation)) {
+		throw new Error(`Cannot set base to '${projectLocation}': The path is not a directory`);
+	}
+}
 
 if (!(projectLocation in savedEnvironments.projects)) {
 	savedEnvironments.projects[projectLocation] = {
@@ -68,7 +82,7 @@ switch (childProgram[0]) {
 		for (let setting in projectSettings.settings) {
 			process.stdout.write(`${setting}\n`);
 		}
-	
+
 		process.exit(0);
 	}
 
@@ -136,7 +150,7 @@ if (!environmentConfiguration) {
 	process.exit(0);
 }
 
-const inputInterface = createInterface({ 
+const inputInterface = createInterface({
 	input: process.stdin,
 	output: process.stdout
 });
@@ -155,9 +169,9 @@ switch (childProgram[0]) {
 
 			while (true) {
 				let response = await inputInterface.question(`${node.name} (${node.environmentName})${node.currentValue ? ` [${node.currentValue}]` : (node.defaultValue ? ` [${node.defaultValue}]` : '')}: `);
-				
+
 				response = response.trim();
-		
+
 				if (node.currentValue && !response) {
 					return node.currentValue;
 				}
@@ -165,19 +179,19 @@ switch (childProgram[0]) {
 				if (node.defaultValue && !response) {
 					response = node.defaultValue;
 				}
-		
+
 				if (node.isNumber) {
 					if (isNaN(+response)) {
 						console.error(`${node.environmentName} must be a number`);
-		
+
 						continue;
 					}
-		
+
 					response = `${+response}`;
 				}
-		
+
 				saveRequired = true;
-		
+
 				return response;
 			}
 		}).then(() => {
@@ -197,84 +211,84 @@ switch (childProgram[0]) {
 
 			while (true) {
 				let response = await inputInterface.question(`${node.name} (${node.environmentName})${node.defaultValue ? ` [${node.defaultValue}]` : ''}: `);
-				
+
 				response = response.trim();
-		
+
 				if (node.defaultValue && !response) {
 					response = node.defaultValue;
 				}
-		
+
 				if (node.isNumber) {
 					if (isNaN(+response)) {
 						console.error(`${node.environmentName} must be a number`);
-		
+
 						continue;
 					}
-		
+
 					response = `${+response}`;
 				}
-		
+
 				saveRequired = true;
-		
+
 				return response;
 			}
 		}).then(async () => {
 			if (saveRequired) {
 				save();
 			}
-		
+
 			// catch cli commands that require variables set
 			switch (childProgram[0]) {
 				case '--export': {
 					process.stdout.write(`environment --import ${Buffer.from(JSON.stringify(activeSettings), 'utf-8').toString('base64')}\n`);
-		
+
 					return process.exit(0);
 				}
-		
+
 				case '--export-json': {
 					process.stdout.write(`${JSON.stringify(chain.environment)}\n`);
-		
+
 					return process.exit(0);
 				}
-		
+
 				case '--export-cluster': {
 					const applicationFilter = await inputInterface.question('Cluster Application Name: ');
 					const environmentFilter = await inputInterface.question('Cluster Environment: ');
-		
+
 					for (let name in chain.environment) {
 						process.stdout.write(`vlc2 var set -a ${applicationFilter} -e ${environmentFilter} -n ${JSON.stringify(name)} -v ${JSON.stringify(chain.environment[name])}\n`);
 					}
-		
+
 					return process.exit(0);
 				}
-		
+
 				case '--export-kubernetes': {
 					for (let name in chain.environment) {
 						process.stdout.write(`- name: ${JSON.stringify(name)}\n  value: ${JSON.stringify(chain.environment[name])}\n`);
 					}
-		
+
 					return process.exit(0);
 				}
-		
+
 				case '--export-shell': {
 					for (let name in chain.environment) {
 						process.stdout.write(`${name}=${JSON.stringify(chain.environment[name])}\n`);
 					}
-		
+
 					return process.exit(0);
 				}
-		
+
 				case '--export-dotenv': {
 					for (let name in chain.environment) {
 						process.stdout.write(`export ${name}=${JSON.stringify(chain.environment[name])}\n`);
 					}
-		
+
 					return process.exit(0);
 				}
-		
+
 				default: {
 					const programLocation = sync(childProgram[0]);
-		
+
 					// do not inject any variables from our state
 					// passing our own properties like 'active setting' would allow developers to add checks to them instead of using the configured environment variables, which is not intended
 					const childProcess = spawn(programLocation, childProgram.slice(1), {
@@ -284,7 +298,7 @@ switch (childProgram[0]) {
 							...chain.environment
 						}
 					});
-		
+
 					childProcess.on('exit', code => {
 						process.exit(code ?? 0);
 					});

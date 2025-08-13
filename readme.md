@@ -22,7 +22,7 @@ Define environment variables in your `package.json`
 }
 ```
 
-You'll automatically be prompted to enter the values required for your project. 
+You'll automatically be prompted to enter the values required for your project.
 The following environment variables will automatically be passed as environment variables to the application launched by environment:
 - `HOST`
 - `DATABASE_HOST`
@@ -32,7 +32,7 @@ Access them as usual with `process.env.HOST` - no changes to the code required.
 The variables are stored in `~/.a-environment` and is thus outside of your current git directory - You can store secrets too and they will never end up in your git!
 
 ## Switching Settings
-You may be working on a testing and staging environment. You can quickly switch between different settings in environment, just create a new environment by using 
+You may be working on a testing and staging environment. You can quickly switch between different settings in environment, just create a new environment by using
 ```
 $ npx environment --switch test
 ```
@@ -82,4 +82,13 @@ $ npx environment --export-shell # exports as NAME="VALUE" statements for shell 
 $ npx environment --export-dotenv # exports as export NAME="VALUE" statements for .env files
 $ npx environment --export-cluster # exports as vlcluster variable commands
 $ npx environment --export-kubernetes # exports as kubernetes deployment configuration values
+```
+
+# Switching the base path
+You may switch to use another directories environment by providing `--base <path>` before any command.
+The argument must be the first after `environment`.
+
+This example will use the settings from the server directory.
+```
+environment --base ../../server node index.js
 ```
